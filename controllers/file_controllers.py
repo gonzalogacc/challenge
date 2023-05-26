@@ -121,7 +121,7 @@ def files_from_tags(
         files.extend([f.file.name for f in tag.files])
 
     ## generate download urls 
-    
+    print("BASE_URL ID", BASE_URL)
     download_urls = [urllib.parse.urljoin(BASE_URL, f"file/{filename}") for filename in files]
     return download_urls
 
