@@ -27,15 +27,15 @@ def POST_upload_files(
         ):
     """Upload files to the server
     """
-    #try:
-    tags = process_name_tags(upload_file.filename, ses)
-    dataset_tag = get_or_create_tag(dataset_name, ses)
-    tags.append(dataset_tag)
-    file = create_file(upload_file, tags, ses, storage_driver=storage_solution)
-    return {"message": "File uploaded successfully"}
+    try:
+        tags = process_name_tags(upload_file.filename, ses)
+        dataset_tag = get_or_create_tag(dataset_name, ses)
+        tags.append(dataset_tag)
+        file = create_file(upload_file, tags, ses, storage_driver=storage_solution)
+        return {"message": "File uploaded successfully"}
 
-    #except Exception as e:
-    #    raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/filter/")
@@ -45,13 +45,13 @@ def POST_list_files_tags(
     ):
     """ Returns a list of files matching this tag
     """
-    #try:
-    print(f"tagnames: {q}")
-    files = files_from_tags(q, ses)
-    return dict(filter_tags=q, files=files, count=len(files))
+    try:
+        print(f"tagnames: {q}")
+        files = files_from_tags(q, ses)
+        return dict(filter_tags=q, files=files, count=len(files))
 
-    #except Exception as e:
-    #    raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/file/{file_name}")
 def GET_list_files(
