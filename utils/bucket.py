@@ -5,7 +5,7 @@ from google.cloud.exceptions import GoogleCloudError
 from tempfile import SpooledTemporaryFile
 from os.path import isfile
 
-GCP_CREDENTIALS_FILE = getenv('GCP_CREDENTIALS_FILE', "/Users/ggarcia/Documents/challenge/friendface/testproject-235011-09b17585d0b3.json")
+GCP_CREDENTIALS_FILE = getenv('GCP_CREDENTIALS_FILE', None)
 
 if not GCP_CREDENTIALS_FILE:
     raise Exception("GCP_CREDENTIALS_FILE environment variable not set")
@@ -18,7 +18,7 @@ if isfile(GCP_CREDENTIALS_FILE):
 else:
     client = Client()
 
-GCP_BUCKET = getenv('GCP_BUCKET', "friendface-challenge")
+GCP_BUCKET = getenv('GCP_BUCKET', "friendface-challenge2")
 if not GCP_BUCKET:
     raise Exception("GCP_BUCKET environment variable not set")
 print(f"GCP_BUCKET={GCP_BUCKET}")
@@ -27,11 +27,10 @@ client = client.bucket(GCP_BUCKET)
 
 def find(filename: str) -> Blob:
     print(f"----> Finding {filename}")
-
-    for blob in client.list_blobs(fields="items(name)"):
-        print(f"----> {blob.name}, {filename}")
-        if blob.name == filename:
-            return blob
+    blob = client.blob(filename)
+    if not blob.exists():
+        raise FileNotFoundError(f"File blob {filename} not found")
+    return blob
 
 def upload(source, destination):
     try:
@@ -45,7 +44,6 @@ def upload(source, destination):
 
 def download_blob(blob):
     tmp = SpooledTemporaryFile()
-    print(f"Downloading {blob.name}")
     blob.download_to_file(tmp)
     tmp.seek(0)
     return tmp
@@ -53,7 +51,6 @@ def download_blob(blob):
 
 def download_file(filename):
     blob = find(filename)
-    print(blob)
     return download_blob(blob)
 
 def list_objects(prefix=''):
