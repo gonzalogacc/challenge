@@ -13,6 +13,8 @@ def load_env(env_file: str=getenv("DOTENV_PATH", "."), fallover=True):
         print(f"Loading environment from .env file {env_file}")
         load_dotenv()
 
+load_env()
+
 def init_connection_engine():
     db_config = {
         "pool_size": 5,
