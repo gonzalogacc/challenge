@@ -13,7 +13,8 @@ from utils.dotenv import load_env
 load_env()
 
 ## Change this to a return value from upload function
-GCP_BUCKET = "friendface-challenge"
+GCP_BUCKET = "friendface-challenge2"
+#GCP_BUCKET = os.f"https://storage.googleapis.com/{GCP_BUCKET}/"
 BASE_URL = os.getenv("BASE_URL", "http://localhost:8000/")
 
 def create_file(
