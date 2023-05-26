@@ -18,9 +18,10 @@ app = FastAPI()
 def root():
     return {"message": "Hello World"}
 
-@app.post("/files/{dataset_name}")
+@app.post("/files/")
 def POST_upload_files(
     dataset_name: str,
+    storage_solution: str = "gcp",
     upload_file: UploadFile = File(...),
     ses: Session = Depends(get_session)
         ):
@@ -30,7 +31,7 @@ def POST_upload_files(
     tags = process_name_tags(upload_file.filename, ses)
     dataset_tag = get_or_create_tag(dataset_name, ses)
     tags.append(dataset_tag)
-    file = create_file(upload_file, tags, ses, storage_driver="local")
+    file = create_file(upload_file, tags, ses, storage_driver=storage_solution)
     return {"message": "File uploaded successfully"}
 
     #except Exception as e:

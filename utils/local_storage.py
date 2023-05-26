@@ -11,15 +11,23 @@ def upload(
         base_path: str = BASE_PATH
     ):
     try:
-        ## check volume exists
+        ## TODO: check volume exists
         destination = Path(base_path) / file_name
-        print(destination)
-        print(file_name)
-        print(upload_file)
         with destination.open("wb") as buffer:
-            shutil.copyfileobj(upload_file, buffer)
+            shutil.copyfileobj(upload_file.file, buffer)
 
     finally:
-        upload_file.close()
+        upload_file.file.close()
 
 
+def get_file(
+        file_name: str,
+        base_path: str = BASE_PATH
+    ):
+    ## TODO: check volume exists
+    destination = Path(base_path) / file_name
+    print(destination)
+    if not destination.exists():
+        return None
+    
+    return destination.open("rb")

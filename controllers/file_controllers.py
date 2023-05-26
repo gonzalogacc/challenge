@@ -29,7 +29,7 @@ def create_file(
 
     elif storage_driver == "local":
         print("storing local file")
-        local_storage.upload(file.file, str(uuid))
+        local_storage.upload(file, str(uuid))
         service = "local"
 
     else:
@@ -70,24 +70,25 @@ def stream_file(
     ## 1. Get the file from the database
     #file = file_get(ses, **kwargs)
     if "filename" in kwargs:
-        uuid = kwargs["filename"]
-        file = ses.query(Files).filter(Files.name == uuid).one_or_none()
+        filename = kwargs["filename"]
+        file = ses.query(Files).filter(Files.name == filename).one_or_none()
         if file is None:
             raise Exception(f"File {uuid} not found")
-
     else:
         ## TODO filters here
         raise Exception("uuid must be provided")
     
-    print("XXXFILE", file)
-
-    # 2. Download the file from the bucket
-    tmp = download_file(file, ses)
-    if tmp is None:
-        raise Exception(f"File not found in bucket")
+    if file.service == "local":
+        print("storing local file")
+        tmp = local_storage.get_file(file.name)
+    
+    elif file.service == "gcp-bucket":
+        print("storing gcp storage file")
+        # 2. Download the file from the bucke
+        tmp = download_file(file, ses)
+        if tmp is None:
+            raise Exception(f"File not found in bucket")
      
-    ## TODO: revisar esto
-    # https://fastapi.tiangolo.com/advanced/custom-response/?h=fileresponse#fileresponse
     def iterfile():
         yield tmp.read()
     
@@ -117,7 +118,7 @@ def files_from_tags(
         files.extend([f.file.name for f in tag.files])
 
     ## generate download urls 
-
+    
     download_urls = [urllib.parse.urljoin(BASE_URL, f"file/{filename}") for filename in files]
     return download_urls
 
