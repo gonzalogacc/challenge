@@ -5,4 +5,4 @@ steps:
     args: ['push', 'europe-southwest1-docker.pkg.dev/$PROJECT_ID/friendface/friendface:$SHORT_SHA']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    args: ['run', 'deploy', '$PROJECT_ID', '--region=europe-southwest1', '--image=europe-southwest1-docker.pkg.dev/$PROJECT_ID/friendface/frindface:$SHORT_SHA', '--add-cloudsql-instances=${PROJECT_ID}:europe-southwest1:frindface', '--allow-unauthenticated']
+    args: ['run', 'deploy', '$PROJECT_ID', '--region=europe-southwest1', '--image=europe-southwest1-docker.pkg.dev/$PROJECT_ID/friendface/friendface:$SHORT_SHA', '--add-cloudsql-instances=${PROJECT_ID}:europe-southwest1:friendface', '--allow-unauthenticated']
