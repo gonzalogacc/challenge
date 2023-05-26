@@ -5,8 +5,7 @@ from google.cloud.exceptions import GoogleCloudError
 from tempfile import SpooledTemporaryFile
 from os.path import isfile
 
-GCP_CREDENTIALS_FILE = getenv('GCP_CREDENTIALS_FILE', None)
-
+GCP_CREDENTIALS_FILE = getenv('GCP_CREDENTIALS_FILE', "./challenge-387912-828b9649a280.json")
 if not GCP_CREDENTIALS_FILE:
     raise Exception("GCP_CREDENTIALS_FILE environment variable not set")
 print("GCP_CREDENTIALS_FILE: {}".format(GCP_CREDENTIALS_FILE))
