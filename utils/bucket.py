@@ -43,20 +43,6 @@ def upload(source, destination):
         print(e)
         return None
 
-
-#def delete_blob(blob):
-#    try:
-#        return blob.delete()
-#    except GoogleCloudError as e:
-#        print(e)
-#        return None
-#
-#
-#def delete_file(filename, prefix=''):
-#    blob = find(filename, prefix=prefix)
-#    return delete_blob(blob)
-
-
 def download_blob(blob):
     tmp = SpooledTemporaryFile()
     print(f"Downloading {blob.name}")
