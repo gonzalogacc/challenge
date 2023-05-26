@@ -6,12 +6,15 @@ from utils import bucket
 from utils import local_storage
 from tempfile import SpooledTemporaryFile
 import urllib
+import os
 
 from models.models import Files, Tags, FileTags
+from utils.dotenv import load_env
+load_env()
 
 ## Change this to a return value from upload function
 GCP_BUCKET = "friendface-challenge"
-BASE_URL = "http://localhost:8000"
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000/")
 
 def create_file(
         file: UploadFile, 
